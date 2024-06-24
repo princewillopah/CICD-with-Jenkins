@@ -18,7 +18,7 @@ pipeline {
             steps {
                 sh '''
                 cp ${WAR_FULL_PATH} .
-                DOCKER_BUILDKIT=1 docker build -t ${TMP_IMAGE_NAME}:${TAG_VERSION} .
+                docker build -t ${TMP_IMAGE_NAME}:${TAG_VERSION} .
                 '''
             }
         }

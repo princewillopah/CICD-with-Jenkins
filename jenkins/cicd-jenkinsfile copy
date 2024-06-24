@@ -20,7 +20,7 @@ pipeline {
                   // }
                 // dir('CICD-Jenkins-ECR-HELM-EKS') {
                 //     sh 'mvn clean install'
-                // }
+                // } 
             }
           }
           stage('Docker Build') {
