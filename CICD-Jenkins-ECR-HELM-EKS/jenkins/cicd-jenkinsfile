@@ -4,7 +4,7 @@ pipeline {
         TAG_VERSION = '4.0.0'
         REGISTRY_PATH = '456555753493.dkr.ecr.eu-north-1.amazonaws.com'
         ECR_REPO_FULL_NAME = '456555753493.dkr.ecr.eu-north-1.amazonaws.com/xyz-app-ecr'
-        WAR_FULL_PATH = '/home/ubuntu/workspace/project-app/target/project-app.war'
+        // WAR_FULL_PATH = '/home/ubuntu/workspace/project-app/target/project-app.war'
         WAR_FULL_PATH = '/CICD-Jenkins-ECR-HELM-EKS/target/project-app.war'
         
         TMP_IMAGE_NAME = 'project-app'
