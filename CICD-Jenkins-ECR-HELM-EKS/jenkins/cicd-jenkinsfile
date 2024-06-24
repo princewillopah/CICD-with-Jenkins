@@ -12,7 +12,10 @@ pipeline {
     stages {
           stage("Maven Build") {
             steps {
-                sh 'mvn clean install'
+                // sh 'mvn clean install'
+                  dir('/home/ubuntu/workspace/CICD-Jenkins-ECR-HELM-EKS') {
+                    sh 'mvn clean install'
+                }
             }
           }
           stage('Docker Build') {
