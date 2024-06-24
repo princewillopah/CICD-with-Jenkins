@@ -23,31 +23,37 @@ pipeline {
           }
           stage('Docker Build') {
             steps {
-              sh '''
-              cp ${WAR_FULL_PATH} .
-              docker build -t ${TMP_IMAGE_NAME}:${TAG_VERSION} .
-              '''
+                dir('CICD-Jenkins-ECR-HELM-EKS') {
+                  sh '''
+                  cp ${WAR_FULL_PATH} .
+                  docker build -t ${TMP_IMAGE_NAME}:${TAG_VERSION} .
+                  '''
+                }
             }
           }
           stage('Docker Tag and Push to ECR') {
             steps {
-              sh '''
-              aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${REGISTRY_PATH}
-              export IMAGE_ID=$(sudo docker images --filter=reference=${TMP_IMAGE_NAME} --format "{{.ID}}")
-              echo $IMAGE_ID
-              docker tag ${IMAGE_ID} ${REGISTRY_PATH}/${ECR_REPO_NAME}:${TAG_VERSION}
-              docker push ${ECR_REPO_FULL_NAME}:${TAG_VERSION}
-              '''
+              dir('CICD-Jenkins-ECR-HELM-EKS'){ 
+                  sh '''
+                  aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${REGISTRY_PATH}
+                  export IMAGE_ID=$(sudo docker images --filter=reference=${TMP_IMAGE_NAME} --format "{{.ID}}")
+                  echo $IMAGE_ID
+                  docker tag ${IMAGE_ID} ${REGISTRY_PATH}/${ECR_REPO_NAME}:${TAG_VERSION}
+                  docker push ${ECR_REPO_FULL_NAME}:${TAG_VERSION}
+                  '''
+              }
             }
           }
           stage('Helm Deploy') {
             steps {
-              sh '''
-              cd helm-charts
-              sed -i "s/replace_image_tag/${TAG_VERSION}/g" values.yaml
-              helm upgrade --install project-app .
-              kubectl get svc
-              '''
+                dir('CICD-Jenkins-ECR-HELM-EKS'){ 
+                  sh '''
+                  cd helm-charts
+                  sed -i "s/replace_image_tag/${TAG_VERSION}/g" values.yaml
+                  helm upgrade --install project-app .
+                  kubectl get svc
+                  '''
+             }
             }
           }
     }
