@@ -13,7 +13,10 @@ pipeline {
           stage("Maven Build") {
             steps {
                 // sh 'mvn clean install'
-                  dir('/home/ubuntu/workspace/CICD-Jenkins-ECR-HELM-EKS') {
+                  // dir('/home/ubuntu/workspace/CICD-Jenkins-ECR-HELM-EKS') {
+                  //   sh 'mvn clean install'
+                  // }
+                dir('CICD-Jenkins-ECR-HELM-EKS') {
                     sh 'mvn clean install'
                 }
             }
